@@ -11,6 +11,10 @@ from gym.utils import seeding
 from robot import Robot
 from video_renderer import VideoRecorder
 from timeit import default_timer as timer
+import numpy as np
+
+# Workaround for numpy deprecation warning
+np.bool = bool
 
 
 def _get_view_matrix():

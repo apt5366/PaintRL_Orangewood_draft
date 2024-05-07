@@ -4,8 +4,13 @@ import tensorflow as tf
 import ray
 import ray.tune as tune
 from ray.rllib.models import ModelCatalog, Model
+# from ray.rllib.models import ModelCatalog
 from ray.rllib.rollout import run
 from PaintRLEnv.robot_gym_env import PaintGymEnv
+import numpy as np
+
+# Workaround for numpy deprecation warning
+np.bool = bool
 
 
 class PaintModel(Model):
@@ -150,7 +155,11 @@ def main(algorithm, config):
     }
     experiment_config['paint']['config']['callbacks'] = call_backs
     if args.mode == 'train':
-        ray.init(object_store_memory=10000000000, redis_max_memory=5000000000, log_to_driver=True)
+        # ray.init(object_store_memory=10000000000, redis_max_memory=5000000000, log_to_driver=True)
+
+        #Change 
+        ray.init(redis_max_memory=5000000000, log_to_driver=True)
+
         # ray.init(redis_address="141.3.81.143:6379")
         experiment_config['paint']['config']['env_config'] = _make_env_config()
         tune.run_experiments(experiment_config)
